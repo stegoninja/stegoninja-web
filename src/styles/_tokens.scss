@@ -1,0 +1,83 @@
+// Design tokens — the single source of styling truth for app-authored UI.
+// Light values live on :root; dark values apply when the user selects dark
+// ([data-theme="dark"]) or, absent an explicit choice, when the OS prefers dark.
+
+:root {
+  // Color — light
+  --bg: #f7f8fa;
+  --surface: #ffffff;
+  --surface-alt: #eef1f5;
+  --text: #141821;
+  --text-muted: #5b6472;
+  --primary: #4f46e5;
+  --primary-contrast: #ffffff;
+  --success: #16a34a;
+  --warning: #d97706;
+  --danger: #dc2626;
+  --border: #dde1e7;
+
+  // Typography
+  --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: ui-monospace, 'SFMono-Regular', 'Menlo', 'Consolas', monospace;
+  --fs-display: 2rem;
+  --fs-h1: 1.5rem;
+  --fs-h2: 1.25rem;
+  --fs-body: 1rem;
+  --fs-small: 0.875rem;
+  --fs-caption: 0.75rem;
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+
+  // Spacing (8-pt grid)
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 24px;
+  --sp-6: 32px;
+  --sp-7: 48px;
+  --sp-8: 64px;
+
+  // Radius
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+
+  // Elevation
+  --shadow-1: 0 1px 2px rgba(20, 24, 33, 0.06), 0 1px 3px rgba(20, 24, 33, 0.08);
+  --shadow-2: 0 4px 12px rgba(20, 24, 33, 0.1), 0 2px 4px rgba(20, 24, 33, 0.06);
+
+  // Motion
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-fast: 150ms;
+  --dur-base: 220ms;
+}
+
+@mixin dark-tokens {
+  --bg: #0e1117;
+  --surface: #161b22;
+  --surface-alt: #1e2430;
+  --text: #e6e9ef;
+  --text-muted: #9aa4b2;
+  --primary: #7c7bff;
+  --primary-contrast: #0e1117;
+  --success: #3fb950;
+  --warning: #e3b341;
+  --danger: #f85149;
+  --border: #2a313c;
+  --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.4), 0 1px 3px rgba(0, 0, 0, 0.5);
+  --shadow-2: 0 4px 14px rgba(0, 0, 0, 0.5), 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+// Explicit user choice wins.
+:root[data-theme='dark'] {
+  @include dark-tokens;
+}
+
+// OS preference applies only when the user has not forced light.
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    @include dark-tokens;
+  }
+}

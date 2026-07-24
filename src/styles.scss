@@ -1,13 +1,14 @@
 @use '@angular/material' as mat;
+@use './styles/tokens';
 
-// Base Angular Material theme. The full design-token system (light/dark
-// custom properties, typography scale, spacing) is layered on in the next
-// checkpoint; this establishes working Material component styling.
+// Angular Material theme. `theme-type: color-scheme` emits light-dark() tokens
+// that follow the CSS `color-scheme` property, so flipping color-scheme (below)
+// switches Material components in lockstep with our own design tokens.
 html {
-  color-scheme: light;
   @include mat.theme(
     (
       color: (
+        theme-type: color-scheme,
         primary: mat.$violet-palette,
         tertiary: mat.$blue-palette,
       ),
@@ -15,6 +16,19 @@ html {
       density: 0,
     )
   );
+
+  // Keep Material's color-scheme in sync with the design-token theme selection.
+  color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    color-scheme: dark;
+  }
 }
 
 html,
@@ -24,5 +38,41 @@ body {
 }
 
 body {
-  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition:
+    background var(--dur-base) var(--ease-out),
+    color var(--dur-base) var(--ease-out);
+}
+
+// Reduced-motion: honor the user's OS setting for non-essential motion.
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+// Accessible visible focus for keyboard users.
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+// Material Symbols base sizing for mat-icon (font loaded in index.html).
+.material-symbols-outlined {
+  font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24;
 }
