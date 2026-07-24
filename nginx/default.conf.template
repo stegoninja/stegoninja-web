@@ -1,0 +1,51 @@
+# nginx serves the built SPA and reverse-proxies the StegoNinja API on the same
+# origin (the API sends no CORS headers, so the browser must reach it
+# same-origin). ${API_UPSTREAM} is substituted at container start.
+#
+# proxy_pass uses a *variable*, so nginx resolves the upstream lazily at request
+# time instead of at startup — the web server still boots and serves the SPA
+# even when the API is down or its hostname isn't resolvable yet.
+# 127.0.0.11 is Docker's embedded DNS, used to resolve the API service name at
+# request time. Only ${API_UPSTREAM} is substituted; nginx runtime variables
+# ($uri, $host, …) are preserved.
+
+server {
+    listen 80;
+    server_name _;
+
+    root /usr/share/nginx/html;
+    index index.html;
+
+    # Allow large uploads (backend accepts up to 256 MB combined; leave headroom).
+    client_max_body_size 300m;
+
+    # Lazy DNS resolution for the variable proxy_pass below (Docker embedded DNS).
+    resolver 127.0.0.11 ipv6=off valid=30s;
+    set $api_upstream "${API_UPSTREAM}";
+
+    # Shared proxy settings (inherited by the API locations below).
+    proxy_http_version 1.1;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+    # Embedding/extraction (esp. video) can take a while — be patient.
+    proxy_connect_timeout 60s;
+    proxy_send_timeout 600s;
+    proxy_read_timeout 600s;
+
+    # API endpoints forwarded to the backend (full original URI preserved).
+    location /image/ { proxy_pass $api_upstream$request_uri; }
+    location /audio/ { proxy_pass $api_upstream$request_uri; }
+    location /video/ { proxy_pass $api_upstream$request_uri; }
+    location /results/ { proxy_pass $api_upstream$request_uri; }
+    location /extracts/ { proxy_pass $api_upstream$request_uri; }
+
+    # Health check → the backend's GET / (trailing slash rewrites the path).
+    location = /api-health { proxy_pass $api_upstream/; }
+
+    # SPA fallback: serve static assets, otherwise index.html for client routes.
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+}

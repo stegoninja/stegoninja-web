@@ -1,0 +1,13 @@
+node_modules
+dist
+.angular
+.git
+.omc
+.vscode
+PRD
+CLAUDE.md
+*.log
+coverage
+out-tsc
+Dockerfile
+.dockerignore
