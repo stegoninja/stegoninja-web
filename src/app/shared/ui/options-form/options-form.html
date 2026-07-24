@@ -1,0 +1,49 @@
+@let o = options();
+@let locked = disabled() || readonly();
+
+<div class="options">
+  <div class="toggles">
+    <mat-slide-toggle
+      [checked]="o.encrypt"
+      [disabled]="locked"
+      (change)="setEncrypt($event.checked)"
+    >
+      Encrypt payload
+      <span class="toggle-hint">Vigenère-encrypt the hidden data with your password</span>
+    </mat-slide-toggle>
+
+    <mat-slide-toggle
+      [checked]="o.randomize"
+      [disabled]="locked"
+      (change)="setRandomize($event.checked)"
+    >
+      Randomize positions
+      <span class="toggle-hint">Scatter the data across the carrier using your password</span>
+    </mat-slide-toggle>
+  </div>
+
+  <mat-form-field appearance="outline" class="password">
+    <mat-label>Password</mat-label>
+    <input
+      matInput
+      [type]="showPassword() ? 'text' : 'password'"
+      [value]="o.password"
+      [disabled]="locked"
+      autocomplete="off"
+      spellcheck="false"
+      (input)="setPassword($any($event.target).value)"
+    />
+    <button
+      matSuffix
+      mat-icon-button
+      type="button"
+      [disabled]="locked"
+      [attr.aria-label]="showPassword() ? 'Hide password' : 'Show password'"
+      [attr.aria-pressed]="showPassword()"
+      (click)="toggleShowPassword()"
+    >
+      <mat-icon aria-hidden="true">{{ showPassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
+    </button>
+    <mat-hint>Kept only in this browser tab and never recoverable — you'll need it to extract.</mat-hint>
+  </mat-form-field>
+</div>

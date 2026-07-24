@@ -1,0 +1,59 @@
+@let selected = file();
+
+<div
+  class="dropzone"
+  [class.dragging]="dragging()"
+  [class.has-file]="!!selected"
+  [class.disabled]="disabled()"
+  role="button"
+  tabindex="0"
+  [attr.aria-label]="'Upload ' + label() + (hint() ? '. ' + hint() : '')"
+  [attr.aria-disabled]="disabled()"
+  (click)="open()"
+  (keydown)="onKeydown($event)"
+  (dragover)="onDragOver($event)"
+  (dragleave)="onDragLeave()"
+  (drop)="onDrop($event)"
+>
+  <input
+    #input
+    type="file"
+    class="native-input"
+    [accept]="accept()"
+    [disabled]="disabled()"
+    (change)="onSelected($event)"
+    tabindex="-1"
+    aria-hidden="true"
+  />
+
+  @if (selected) {
+    <div class="file-row">
+      <mat-icon aria-hidden="true">description</mat-icon>
+      <div class="file-meta">
+        <span class="file-name" [title]="selected.name">{{ selected.name }}</span>
+        <span class="file-size">{{ sizeLabel() }}</span>
+      </div>
+      <button
+        mat-icon-button
+        type="button"
+        class="remove"
+        [disabled]="disabled()"
+        aria-label="Remove file"
+        (click)="clear($event)"
+      >
+        <mat-icon aria-hidden="true">close</mat-icon>
+      </button>
+    </div>
+  } @else {
+    <div class="empty">
+      <mat-icon class="upload-icon" aria-hidden="true">upload</mat-icon>
+      <div class="prompt">
+        <strong>{{ label() }}</strong>
+        <span>Drop a file here, or <span class="link">browse</span></span>
+      </div>
+      @if (hint()) {
+        <p class="hint">{{ hint() }}</p>
+      }
+    </div>
+  }
+</div>
