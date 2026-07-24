@@ -12,7 +12,11 @@ import { TECHNIQUES } from '../../../core/api/techniques';
   template: `
     <mat-form-field appearance="outline" class="field">
       <mat-label>Technique</mat-label>
-      <mat-select [value]="selectedId()" [disabled]="disabled()" (selectionChange)="selectedId.set($event.value)">
+      <mat-select
+        [value]="selectedId()"
+        [disabled]="disabled()"
+        (selectionChange)="selectedId.set($event.value)"
+      >
         @for (t of techniques(); track t.id) {
           <mat-option [value]="t.id">
             <mat-icon aria-hidden="true">{{ t.icon }}</mat-icon>

@@ -12,7 +12,8 @@ export const TECHNIQUES: readonly Technique[] = [
     algorithm: 'lsb',
     label: 'Image LSB',
     icon: 'image',
-    description: 'Hide data in the least-significant bits of an image. Any image is accepted; the stego output is a lossless BMP.',
+    description:
+      'Hide data in the least-significant bits of an image. Any image is accepted; the stego output is a lossless BMP.',
     coverAccept: 'image/*',
     coverHint: 'Any common image (PNG, JPG, BMP…). Output is a lossless BMP.',
     stegoExtension: '.bmp',
@@ -27,7 +28,8 @@ export const TECHNIQUES: readonly Technique[] = [
     algorithm: 'bpcs',
     label: 'Image BPCS',
     icon: 'grid_view',
-    description: 'Bit-Plane Complexity Segmentation over a 24-bit BMP cover. Higher capacity than LSB; output is a BMP.',
+    description:
+      'Bit-Plane Complexity Segmentation over a 24-bit BMP cover. Higher capacity than LSB; output is a BMP.',
     coverAccept: 'image/*',
     coverHint: 'A 24-bit image (converted to BMP). Output is a lossless BMP.',
     stegoExtension: '.bmp',
@@ -42,7 +44,8 @@ export const TECHNIQUES: readonly Technique[] = [
     algorithm: 'lsb',
     label: 'Audio LSB',
     icon: 'graphic_eq',
-    description: 'Hide data in the least-significant bits of PCM WAV samples. Output is a WAV file.',
+    description:
+      'Hide data in the least-significant bits of PCM WAV samples. Output is a WAV file.',
     coverAccept: 'audio/wav,audio/x-wav,.wav',
     coverHint: 'A PCM WAV file. Output is a WAV.',
     stegoExtension: '.wav',
@@ -57,9 +60,11 @@ export const TECHNIQUES: readonly Technique[] = [
     algorithm: 'lsb',
     label: 'Video LSB',
     icon: 'movie',
-    description: 'Hide data in video frame pixels. Output is a lossless FFV1/AVI file — re-upload that exact AVI to extract.',
+    description:
+      'Hide data in video frame pixels. Output is a lossless FFV1/AVI file — re-upload that exact AVI to extract.',
     coverAccept: 'video/*',
-    coverHint: 'Any readable video. Output is a lossless FFV1/AVI (re-upload the exact AVI to extract).',
+    coverHint:
+      'Any readable video. Output is a lossless FFV1/AVI (re-upload the exact AVI to extract).',
     stegoExtension: '.avi',
     stegoMime: 'video/x-msvideo',
     embedPath: '/video/lsb/embed',

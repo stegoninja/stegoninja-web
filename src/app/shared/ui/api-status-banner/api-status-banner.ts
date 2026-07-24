@@ -15,8 +15,8 @@ import { HealthService } from '../../../core/api/health.service';
       <div class="banner" role="alert">
         <mat-icon aria-hidden="true">cloud_off</mat-icon>
         <span class="text">
-          The steganography service is unreachable. Embedding and extracting are unavailable until it
-          responds.
+          The steganography service is unreachable. Embedding and extracting are unavailable until
+          it responds.
         </span>
         <button mat-button type="button" (click)="retry()">Retry</button>
       </div>

@@ -31,12 +31,14 @@ describe('StegoApiService', () => {
     const results: string[] = [];
     let done: EmbedData | undefined;
 
-    service.runEmbed(technique, { cover: file('c.png'), secret: file('s.txt'), options }).subscribe((p) => {
-      results.push(p.phase);
-      if (p.data) {
-        done = p.data;
-      }
-    });
+    service
+      .runEmbed(technique, { cover: file('c.png'), secret: file('s.txt'), options })
+      .subscribe((p) => {
+        results.push(p.phase);
+        if (p.data) {
+          done = p.data;
+        }
+      });
 
     const req = httpMock.expectOne('/image/lsb/embed');
     const body = req.request.body as FormData;
@@ -79,13 +81,20 @@ describe('StegoApiService', () => {
   it('omits password when blank and fetches a blob for the second step', () => {
     const technique = findTechnique('video-lsb')!;
     service
-      .runExtract(technique, { stego: file('x.avi'), options: { password: '', encrypt: false, randomize: false } })
+      .runExtract(technique, {
+        stego: file('x.avi'),
+        options: { password: '', encrypt: false, randomize: false },
+      })
       .subscribe();
     const req = httpMock.expectOne('/video/lsb/extract');
     const body = req.request.body as FormData;
     expect(body.has('password')).toBe(false);
     expect(body.get('stego')).toBeInstanceOf(File);
-    req.flush({ status: 'success', message: 'ok', data: { result: '/extracts/z', originalFilename: 's.txt' } });
+    req.flush({
+      status: 'success',
+      message: 'ok',
+      data: { result: '/extracts/z', originalFilename: 's.txt' },
+    });
 
     service.fetchBlob('/extracts/z').subscribe();
     const dl = httpMock.expectOne('/extracts/z');

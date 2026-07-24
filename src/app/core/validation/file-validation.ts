@@ -50,7 +50,10 @@ export function validateUploadSize(
  * backend does no format allow-listing, so this is guidance, not a hard block —
  * except that an empty file is always an error.
  */
-export function validateCoverType(technique: Technique, file: File | null | undefined): ValidationResult {
+export function validateCoverType(
+  technique: Technique,
+  file: File | null | undefined,
+): ValidationResult {
   if (!file) {
     return { ok: false, severity: 'error', message: 'Please choose a file.' };
   }

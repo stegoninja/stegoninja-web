@@ -114,7 +114,9 @@ export class EmbedPage {
         },
         error: (err: unknown) => {
           this.errorMessage.set(
-            err instanceof StegoApiError ? err.userMessage : 'Something went wrong. Please try again.',
+            err instanceof StegoApiError
+              ? err.userMessage
+              : 'Something went wrong. Please try again.',
           );
           this.status.set('error');
         },

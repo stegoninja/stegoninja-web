@@ -3,12 +3,7 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import {
-  EmbedData,
-  ExtractData,
-  StegoOptions,
-  defaultOptions,
-} from '../../core/api/api.models';
+import { EmbedData, ExtractData, StegoOptions, defaultOptions } from '../../core/api/api.models';
 import { StegoApiService } from '../../core/api/stego-api.service';
 import { HealthService } from '../../core/api/health.service';
 import { StegoApiError } from '../../core/api/stego-error';
@@ -96,7 +91,12 @@ export class Guided {
     return res.ok ? null : res.message!;
   });
   protected readonly canEmbed = computed(
-    () => !!this.cover() && !!this.secret() && !this.sizeError() && !this.embedBusy() && !this.apiDown(),
+    () =>
+      !!this.cover() &&
+      !!this.secret() &&
+      !this.sizeError() &&
+      !this.embedBusy() &&
+      !this.apiDown(),
   );
 
   protected readonly embedDone = computed(() => this.embedPhase() === 'done');
@@ -120,7 +120,11 @@ export class Guided {
     this.embedProgress.set(0);
 
     this.api
-      .runEmbed(this.current(), { cover: this.cover()!, secret: this.secret()!, options: this.options() })
+      .runEmbed(this.current(), {
+        cover: this.cover()!,
+        secret: this.secret()!,
+        options: this.options(),
+      })
       .subscribe({
         next: (p) => {
           this.embedProgress.set(p.progress);
@@ -233,6 +237,8 @@ export class Guided {
   }
 
   private messageOf(err: unknown): string {
-    return err instanceof StegoApiError ? err.userMessage : 'Something went wrong. Please try again.';
+    return err instanceof StegoApiError
+      ? err.userMessage
+      : 'Something went wrong. Please try again.';
   }
 }

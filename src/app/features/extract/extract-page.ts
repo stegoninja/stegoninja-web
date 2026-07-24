@@ -92,23 +92,27 @@ export class ExtractPage {
     this.status.set('uploading');
     this.progress.set(0);
 
-    this.api.runExtract(this.current(), { stego: this.stego()!, options: this.options() }).subscribe({
-      next: (p) => {
-        this.progress.set(p.progress);
-        if (p.data) {
-          this.result.set(p.data);
-          this.status.set('done');
-        } else {
-          this.status.set(p.phase === 'uploading' ? 'uploading' : 'processing');
-        }
-      },
-      error: (err: unknown) => {
-        this.errorMessage.set(
-          err instanceof StegoApiError ? err.userMessage : 'Something went wrong. Please try again.',
-        );
-        this.status.set('error');
-      },
-    });
+    this.api
+      .runExtract(this.current(), { stego: this.stego()!, options: this.options() })
+      .subscribe({
+        next: (p) => {
+          this.progress.set(p.progress);
+          if (p.data) {
+            this.result.set(p.data);
+            this.status.set('done');
+          } else {
+            this.status.set(p.phase === 'uploading' ? 'uploading' : 'processing');
+          }
+        },
+        error: (err: unknown) => {
+          this.errorMessage.set(
+            err instanceof StegoApiError
+              ? err.userMessage
+              : 'Something went wrong. Please try again.',
+          );
+          this.status.set('error');
+        },
+      });
   }
 
   protected downloadSecret(): void {

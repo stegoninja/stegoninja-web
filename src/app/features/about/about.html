@@ -7,9 +7,16 @@
   <section>
     <h2>The workflow</h2>
     <ol class="steps">
-      <li><strong>Embed</strong> — upload a cover file and the secret you want to hide; you get back a stego file.</li>
-      <li><strong>Download</strong> — save the stego file (it looks and plays like normal media).</li>
-      <li><strong>Extract</strong> — later, upload that stego file to recover the original secret.</li>
+      <li>
+        <strong>Embed</strong> — upload a cover file and the secret you want to hide; you get back a
+        stego file.
+      </li>
+      <li>
+        <strong>Download</strong> — save the stego file (it looks and plays like normal media).
+      </li>
+      <li>
+        <strong>Extract</strong> — later, upload that stego file to recover the original secret.
+      </li>
     </ol>
     <p>
       The <a routerLink="/guided">guided round-trip</a> walks you through all three and keeps your
@@ -38,9 +45,15 @@
       <dt>Encrypt</dt>
       <dd>Vigenère-encrypts the hidden payload with your password before embedding.</dd>
       <dt>Randomize</dt>
-      <dd>Scatters the payload across the carrier using a password-seeded sequence, so it isn't in a predictable order.</dd>
+      <dd>
+        Scatters the payload across the carrier using a password-seeded sequence, so it isn't in a
+        predictable order.
+      </dd>
       <dt>Password</dt>
-      <dd>Key material for encryption and randomization. It's held only in this browser tab and is never recoverable — keep it safe.</dd>
+      <dd>
+        Key material for encryption and randomization. It's held only in this browser tab and is
+        never recoverable — keep it safe.
+      </dd>
     </dl>
   </section>
 

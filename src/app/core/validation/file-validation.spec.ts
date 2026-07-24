@@ -58,6 +58,8 @@ describe('validateCoverType', () => {
 
   it('covers all four techniques by extension', () => {
     expect(TECHNIQUES.length).toBe(4);
-    expect(validateCoverType(findTechnique('video-lsb')!, fakeFile('clip.avi', 1000)).ok).toBe(true);
+    expect(validateCoverType(findTechnique('video-lsb')!, fakeFile('clip.avi', 1000)).ok).toBe(
+      true,
+    );
   });
 });

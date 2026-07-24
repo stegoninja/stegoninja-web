@@ -1,7 +1,10 @@
 <div class="page">
   <header class="page-head">
     <h1>Guided round-trip</h1>
-    <p>Embed a secret, then recover it — the wizard carries your technique, options, and file across so extraction always matches.</p>
+    <p>
+      Embed a secret, then recover it — the wizard carries your technique, options, and file across
+      so extraction always matches.
+    </p>
   </header>
 
   <mat-stepper
@@ -103,7 +106,8 @@
         <div class="carried">
           <p class="carried-line">
             <mat-icon aria-hidden="true">check_circle</mat-icon>
-            Using <strong>{{ current().label }}</strong> with your embed options — carried over automatically.
+            Using <strong>{{ current().label }}</strong> with your embed options — carried over
+            automatically.
           </p>
           @if (stegoFile(); as f) {
             <p class="carried-line">

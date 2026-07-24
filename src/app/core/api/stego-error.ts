@@ -40,7 +40,10 @@ export function mapServerMessage(raw: string | undefined): {
     };
   }
   if (has('Invalid content type') || has('multipart boundary')) {
-    return { kind: 'validation', userMessage: 'Something went wrong sending your files. Please try again.' };
+    return {
+      kind: 'validation',
+      userMessage: 'Something went wrong sending your files. Please try again.',
+    };
   }
   if (has('Missing or empty file part') || has('No Cover') || has('No Secret') || has('No Stego')) {
     return { kind: 'validation', userMessage: 'Please attach the required file(s) and try again.' };
@@ -49,9 +52,12 @@ export function mapServerMessage(raw: string | undefined): {
     return { kind: 'validation', userMessage: "We couldn't process your upload. Please retry." };
   }
   if (has('convert') && has('BMP')) {
-    return { kind: 'validation', userMessage: "This image couldn't be processed. Try a standard PNG, BMP, or JPG." };
+    return {
+      kind: 'validation',
+      userMessage: "This image couldn't be processed. Try a standard PNG, BMP, or JPG.",
+    };
   }
-  if (has('unsupported format') || (has('Failed to open video'))) {
+  if (has('unsupported format') || has('Failed to open video')) {
     return {
       kind: 'validation',
       userMessage:
@@ -61,11 +67,13 @@ export function mapServerMessage(raw: string | undefined): {
   if (has('Infinite dB') || has('no changes made')) {
     return {
       kind: 'validation',
-      userMessage: 'No changes were made to the cover — the secret may be empty or the cover unsuitable.',
+      userMessage:
+        'No changes were made to the cover — the secret may be empty or the cover unsuitable.',
     };
   }
   return {
     kind: 'validation',
-    userMessage: msg || 'The request could not be completed. Please check your input and try again.',
+    userMessage:
+      msg || 'The request could not be completed. Please check your input and try again.',
   };
 }
