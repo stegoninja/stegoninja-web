@@ -1,1 +1,47 @@
-<router-outlet />
+<a class="skip-link" href="#main-content">Skip to content</a>
+
+<header class="topbar">
+  <a class="brand" routerLink="/" aria-label="StegoNinja home">
+    <mat-icon aria-hidden="true">shield_lock</mat-icon>
+    <span class="brand-name">StegoNinja</span>
+  </a>
+
+  <nav class="nav" aria-label="Primary">
+    <a routerLink="/guided" routerLinkActive="active">Guided</a>
+    <a routerLink="/embed" routerLinkActive="active">Embed</a>
+    <a routerLink="/extract" routerLinkActive="active">Extract</a>
+    <a routerLink="/about" routerLinkActive="active">About</a>
+  </nav>
+
+  <div class="actions">
+    <span
+      class="health-dot"
+      [class.ok]="health.status() === 'ok'"
+      [class.down]="health.status() === 'down'"
+      [attr.title]="
+        health.status() === 'ok'
+          ? 'Service online'
+          : health.status() === 'down'
+            ? 'Service unreachable'
+            : 'Checking service…'
+      "
+      role="status"
+      [attr.aria-label]="'Service status: ' + health.status()"
+    ></span>
+
+    <button
+      mat-icon-button
+      type="button"
+      (click)="toggleTheme()"
+      [attr.aria-label]="isDark() ? 'Switch to light theme' : 'Switch to dark theme'"
+    >
+      <mat-icon aria-hidden="true">{{ isDark() ? 'light_mode' : 'dark_mode' }}</mat-icon>
+    </button>
+  </div>
+</header>
+
+<app-api-status-banner />
+
+<main id="main-content" class="main" tabindex="-1">
+  <router-outlet />
+</main>

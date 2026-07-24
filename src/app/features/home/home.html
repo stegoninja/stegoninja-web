@@ -1,0 +1,31 @@
+<section class="hero">
+  <h1>Hide a file inside an image, audio, or video.</h1>
+  <p class="lede">
+    StegoNinja embeds a secret file into ordinary media, then recovers it later — with optional
+    encryption and randomization. Nothing is stored: everything happens per request.
+  </p>
+  <div class="hero-actions">
+    <a mat-flat-button routerLink="/guided">
+      <mat-icon aria-hidden="true">auto_awesome</mat-icon>
+      Start guided round-trip
+    </a>
+    <a mat-stroked-button routerLink="/embed">Embed a file</a>
+    <a mat-stroked-button routerLink="/extract">Extract a file</a>
+  </div>
+</section>
+
+<section class="techniques" aria-label="Techniques">
+  <h2>Choose a technique</h2>
+  <div class="grid">
+    @for (t of techniques; track t.id) {
+      <a class="technique-card" routerLink="/guided" [queryParams]="{ technique: t.id }">
+        <mat-icon class="tech-icon" aria-hidden="true">{{ t.icon }}</mat-icon>
+        <h3>{{ t.label }}</h3>
+        <p>{{ t.description }}</p>
+        <span class="go">
+          Start <mat-icon aria-hidden="true">arrow_forward</mat-icon>
+        </span>
+      </a>
+    }
+  </div>
+</section>

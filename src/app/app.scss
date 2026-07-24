@@ -1,0 +1,120 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+}
+
+.skip-link {
+  position: absolute;
+  left: var(--sp-2);
+  top: -48px;
+  z-index: 100;
+  padding: var(--sp-2) var(--sp-3);
+  background: var(--primary);
+  color: var(--primary-contrast);
+  border-radius: var(--radius-sm);
+  transition: top var(--dur-fast) var(--ease-out);
+
+  &:focus {
+    top: var(--sp-2);
+  }
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+  padding: 0 var(--sp-5);
+  height: 60px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  color: var(--text);
+  text-decoration: none;
+  font-weight: var(--fw-semibold);
+  font-size: 1.125rem;
+
+  mat-icon {
+    color: var(--primary);
+  }
+}
+
+.nav {
+  display: flex;
+  gap: var(--sp-2);
+  margin-left: var(--sp-4);
+  flex: 1;
+
+  a {
+    padding: var(--sp-2) var(--sp-3);
+    border-radius: var(--radius-sm);
+    color: var(--text-muted);
+    text-decoration: none;
+    font-weight: var(--fw-medium);
+    transition:
+      color var(--dur-fast) var(--ease-out),
+      background var(--dur-fast) var(--ease-out);
+
+    &:hover {
+      color: var(--text);
+      background: var(--surface-alt);
+    }
+
+    &.active {
+      color: var(--primary);
+      background: color-mix(in srgb, var(--primary) 10%, transparent);
+    }
+  }
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+.health-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--text-muted);
+
+  &.ok {
+    background: var(--success);
+  }
+  &.down {
+    background: var(--danger);
+  }
+}
+
+.main {
+  flex: 1;
+  outline: none;
+}
+
+@media (max-width: 599px) {
+  .topbar {
+    padding: 0 var(--sp-3);
+    gap: var(--sp-2);
+  }
+  .brand-name {
+    display: none;
+  }
+  .nav {
+    margin-left: 0;
+    gap: 0;
+
+    a {
+      padding: var(--sp-2);
+      font-size: var(--fs-small);
+    }
+  }
+}
