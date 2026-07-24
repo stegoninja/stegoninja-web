@@ -1,0 +1,13 @@
+{
+  "/image": { "target": "http://localhost:8080", "secure": false, "changeOrigin": true },
+  "/audio": { "target": "http://localhost:8080", "secure": false, "changeOrigin": true },
+  "/video": { "target": "http://localhost:8080", "secure": false, "changeOrigin": true },
+  "/results": { "target": "http://localhost:8080", "secure": false, "changeOrigin": true },
+  "/extracts": { "target": "http://localhost:8080", "secure": false, "changeOrigin": true },
+  "/api-health": {
+    "target": "http://localhost:8080",
+    "secure": false,
+    "changeOrigin": true,
+    "pathRewrite": { "^/api-health": "/" }
+  }
+}
