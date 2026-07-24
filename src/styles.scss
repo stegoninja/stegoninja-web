@@ -68,8 +68,18 @@ body {
   outline-offset: 2px;
 }
 
-// Material Symbols base sizing for mat-icon (font loaded in index.html).
+// Material Symbols base styling for mat-icon (font loaded in index.html).
+// mat-icon gets the `material-symbols-outlined` class via MAT_ICON_DEFAULT_OPTIONS.
 .material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
   font-variation-settings:
     'FILL' 0,
     'wght' 400,
