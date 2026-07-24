@@ -8,7 +8,7 @@ import { HealthService } from '../../core/api/health.service';
 import { StegoApiError } from '../../core/api/stego-error';
 import { TECHNIQUES, findTechnique } from '../../core/api/techniques';
 import { FileDownloadService } from '../../core/api/file-download.service';
-import { validateUploadSize } from '../../core/validation/file-validation';
+import { validateCoverType, validateUploadSize } from '../../core/validation/file-validation';
 import { FileDropzone } from '../../shared/ui/file-dropzone/file-dropzone';
 import { OptionsForm } from '../../shared/ui/options-form/options-form';
 import { ResultCard, ResultMetric } from '../../shared/ui/result-card/result-card';
@@ -69,8 +69,19 @@ export class ExtractPage {
     return res.ok ? null : res.message!;
   });
 
+  private readonly stegoCheck = computed(() => {
+    const f = this.stego();
+    return f ? validateCoverType(this.current(), f) : null;
+  });
+  protected readonly stegoWarning = computed(() => this.stegoCheck()?.message ?? null);
+
   protected readonly canSubmit = computed(
-    () => !!this.stego() && !this.sizeError() && !this.busy() && !this.apiDown(),
+    () =>
+      !!this.stego() &&
+      !this.sizeError() &&
+      (this.stegoCheck() ? this.stegoCheck()!.ok : true) &&
+      !this.busy() &&
+      !this.apiDown(),
   );
 
   protected readonly metrics = computed<ResultMetric[]>(() => {

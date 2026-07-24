@@ -54,6 +54,9 @@ export class StegoApiService {
 
   private toProgress<T>(event: HttpEvent<Envelope<T>>): StegoProgress<T> {
     switch (event.type) {
+      case HttpEventType.Sent:
+        // Request dispatched, upload not yet reported — show uploading at 0.
+        return { phase: 'uploading', progress: 0 };
       case HttpEventType.UploadProgress: {
         const progress = event.total ? Math.round((event.loaded / event.total) * 100) : 0;
         // Below 100 the client is still uploading; at 100 the server is working.

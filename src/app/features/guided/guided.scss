@@ -13,6 +13,13 @@ mat-stepper {
   background: transparent;
 }
 
+// Headers are progress indicators only — navigation happens through the
+// in-step buttons, keeping the flow strictly controlled.
+::ng-deep .mat-step-header {
+  pointer-events: none;
+  cursor: default;
+}
+
 .carried {
   display: flex;
   flex-direction: column;

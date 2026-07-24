@@ -9,7 +9,7 @@ import { HealthService } from '../../core/api/health.service';
 import { StegoApiError } from '../../core/api/stego-error';
 import { TECHNIQUES, findTechnique } from '../../core/api/techniques';
 import { FileDownloadService } from '../../core/api/file-download.service';
-import { validateUploadSize } from '../../core/validation/file-validation';
+import { validateCoverType, validateUploadSize } from '../../core/validation/file-validation';
 import { FileDropzone } from '../../shared/ui/file-dropzone/file-dropzone';
 import { OptionsForm } from '../../shared/ui/options-form/options-form';
 import { ResultCard, ResultMetric } from '../../shared/ui/result-card/result-card';
@@ -90,11 +90,18 @@ export class Guided {
     const res = validateUploadSize([this.cover(), this.secret()]);
     return res.ok ? null : res.message!;
   });
+  private readonly coverCheck = computed(() => {
+    const f = this.cover();
+    return f ? validateCoverType(this.current(), f) : null;
+  });
+  protected readonly coverWarning = computed(() => this.coverCheck()?.message ?? null);
   protected readonly canEmbed = computed(
     () =>
       !!this.cover() &&
       !!this.secret() &&
       !this.sizeError() &&
+      (this.coverCheck() ? this.coverCheck()!.ok : true) &&
+      !(this.secret() && this.secret()!.size === 0) &&
       !this.embedBusy() &&
       !this.apiDown(),
   );

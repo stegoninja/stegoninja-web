@@ -17,8 +17,8 @@ describe('App', () => {
   });
 
   function flushHealth(): void {
-    // The shell probes health on init; satisfy that request in tests.
-    httpMock.expectOne(environment.healthPath).flush({ status: 'ok' });
+    // The shell probes health on init (as text); satisfy that request in tests.
+    httpMock.expectOne(environment.healthPath).flush('ok');
   }
 
   it('should create the app', () => {

@@ -70,5 +70,11 @@ describe('Guided', () => {
 
     expect(cmp.extractDone()).toBe(true);
     expect(cmp.stepIndex()).toBe(3);
+
+    // The rendered stepper actually advanced to the final step, not just the signal.
+    const selectedHeader = fixture.nativeElement.querySelector(
+      '.mat-step-header[aria-selected="true"]',
+    ) as HTMLElement | null;
+    expect(selectedHeader?.textContent).toContain('Recovered');
   });
 });

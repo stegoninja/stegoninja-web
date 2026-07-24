@@ -21,6 +21,9 @@
     />
   </div>
 
+  @if (stegoWarning()) {
+    <p class="inline-warning">{{ stegoWarning() }}</p>
+  }
   @if (sizeError()) {
     <p class="inline-error" role="alert">{{ sizeError() }}</p>
   }

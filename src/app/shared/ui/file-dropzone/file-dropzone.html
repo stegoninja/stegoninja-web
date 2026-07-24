@@ -5,12 +5,7 @@
   [class.dragging]="dragging()"
   [class.has-file]="!!selected"
   [class.disabled]="disabled()"
-  role="button"
-  tabindex="0"
-  [attr.aria-label]="'Upload ' + label() + (hint() ? '. ' + hint() : '')"
-  [attr.aria-disabled]="disabled()"
   (click)="open()"
-  (keydown)="onKeydown($event)"
   (dragover)="onDragOver($event)"
   (dragleave)="onDragLeave()"
   (drop)="onDrop($event)"
@@ -49,8 +44,18 @@
       <mat-icon class="upload-icon" aria-hidden="true">upload</mat-icon>
       <div class="prompt">
         <strong>{{ label() }}</strong>
-        <span>Drop a file here, or <span class="link">browse</span></span>
+        <span>Drop a file here, or</span>
       </div>
+      <button
+        mat-stroked-button
+        type="button"
+        class="browse"
+        [disabled]="disabled()"
+        [attr.aria-label]="'Browse for ' + label()"
+        (click)="open(); $event.stopPropagation()"
+      >
+        Browse
+      </button>
       @if (hint()) {
         <p class="hint">{{ hint() }}</p>
       }

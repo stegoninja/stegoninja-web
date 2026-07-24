@@ -17,12 +17,17 @@ export class HealthService {
 
   readonly status = this._status.asReadonly();
 
-  /** Fetch health once and update the status signal. */
+  /**
+   * Fetch health once and update the status signal. Any successful 2xx response
+   * means the service is reachable — we deliberately do not require a specific
+   * body shape, so the app isn't hard-disabled against a healthy backend whose
+   * root returns something other than `{status:"ok"}`.
+   */
   check(): void {
     this.http
-      .get<{ status?: string }>(environment.healthPath)
+      .get(environment.healthPath, { responseType: 'text' })
       .pipe(
-        map((body): HealthStatus => (body?.status === 'ok' ? 'ok' : 'down')),
+        map((): HealthStatus => 'ok'),
         catchError(() => of<HealthStatus>('down')),
       )
       .subscribe((status) => this._status.set(status));

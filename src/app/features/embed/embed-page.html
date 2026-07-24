@@ -28,6 +28,9 @@
     />
   </div>
 
+  @if (coverWarning()) {
+    <p class="inline-warning">{{ coverWarning() }}</p>
+  }
   @if (sizeError()) {
     <p class="inline-error" role="alert">{{ sizeError() }}</p>
   }

@@ -71,11 +71,4 @@ export class FileDropzone {
       el.value = '';
     }
   }
-
-  protected onKeydown(event: KeyboardEvent): void {
-    if (event.key === 'Enter' || event.key === ' ') {
-      event.preventDefault();
-      this.open();
-    }
-  }
 }

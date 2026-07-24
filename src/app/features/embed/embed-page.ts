@@ -8,7 +8,7 @@ import { HealthService } from '../../core/api/health.service';
 import { StegoApiError } from '../../core/api/stego-error';
 import { TECHNIQUES, findTechnique } from '../../core/api/techniques';
 import { FileDownloadService } from '../../core/api/file-download.service';
-import { validateUploadSize } from '../../core/validation/file-validation';
+import { validateCoverType, validateUploadSize } from '../../core/validation/file-validation';
 import { FileDropzone } from '../../shared/ui/file-dropzone/file-dropzone';
 import { OptionsForm } from '../../shared/ui/options-form/options-form';
 import { ResultCard, ResultMetric } from '../../shared/ui/result-card/result-card';
@@ -73,8 +73,26 @@ export class EmbedPage {
     return res.ok ? null : res.message!;
   });
 
+  /** Per-technique type check for the cover (validates dropped files too). */
+  private readonly coverCheck = computed(() => {
+    const f = this.cover();
+    return f ? validateCoverType(this.current(), f) : null;
+  });
+  protected readonly coverWarning = computed(() => this.coverCheck()?.message ?? null);
+  protected readonly inputsInvalid = computed(() => {
+    const cover = this.coverCheck();
+    const secret = this.secret();
+    return (cover ? !cover.ok : false) || (!!secret && secret.size === 0);
+  });
+
   protected readonly canSubmit = computed(
-    () => !!this.cover() && !!this.secret() && !this.sizeError() && !this.busy() && !this.apiDown(),
+    () =>
+      !!this.cover() &&
+      !!this.secret() &&
+      !this.sizeError() &&
+      !this.inputsInvalid() &&
+      !this.busy() &&
+      !this.apiDown(),
   );
 
   protected readonly metrics = computed<ResultMetric[]>(() => {
