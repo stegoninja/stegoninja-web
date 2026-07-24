@@ -21,6 +21,10 @@ export const routes: Routes = [
     loadComponent: () => import('./features/guided/guided').then((m) => m.Guided),
     title: 'Guided round-trip · StegoNinja',
   },
-  // The about route is registered when that page is built.
+  {
+    path: 'about',
+    loadComponent: () => import('./features/about/about').then((m) => m.About),
+    title: 'About · StegoNinja',
+  },
   { path: '**', redirectTo: '' },
 ];

@@ -1,0 +1,79 @@
+<div class="page">
+  <header class="page-head">
+    <h1>How StegoNinja works</h1>
+    <p>Steganography hides a file inside ordinary media so its very existence is concealed.</p>
+  </header>
+
+  <section>
+    <h2>The workflow</h2>
+    <ol class="steps">
+      <li><strong>Embed</strong> — upload a cover file and the secret you want to hide; you get back a stego file.</li>
+      <li><strong>Download</strong> — save the stego file (it looks and plays like normal media).</li>
+      <li><strong>Extract</strong> — later, upload that stego file to recover the original secret.</li>
+    </ol>
+    <p>
+      The <a routerLink="/guided">guided round-trip</a> walks you through all three and keeps your
+      settings aligned automatically.
+    </p>
+  </section>
+
+  <section>
+    <h2>Techniques</h2>
+    <div class="tech-list">
+      @for (t of techniques; track t.id) {
+        <div class="tech">
+          <mat-icon aria-hidden="true">{{ t.icon }}</mat-icon>
+          <div>
+            <h3>{{ t.label }}</h3>
+            <p>{{ t.description }}</p>
+          </div>
+        </div>
+      }
+    </div>
+  </section>
+
+  <section>
+    <h2>Options</h2>
+    <dl class="defs">
+      <dt>Encrypt</dt>
+      <dd>Vigenère-encrypts the hidden payload with your password before embedding.</dd>
+      <dt>Randomize</dt>
+      <dd>Scatters the payload across the carrier using a password-seeded sequence, so it isn't in a predictable order.</dd>
+      <dt>Password</dt>
+      <dd>Key material for encryption and randomization. It's held only in this browser tab and is never recoverable — keep it safe.</dd>
+    </dl>
+  </section>
+
+  <section class="rules">
+    <h2>Rules that matter</h2>
+    <ul>
+      <li>
+        <strong>Extraction must match embedding.</strong> Use the same technique, encryption,
+        randomization, and password. A mismatch produces corrupt output rather than a clear error.
+      </li>
+      <li>
+        <strong>Keep stego files lossless.</strong> Outputs are BMP, WAV, or FFV1/AVI on purpose.
+        Never re-compress or convert a stego file before extracting — hidden data does not survive
+        lossy codecs. For video, re-upload the exact AVI you downloaded.
+      </li>
+      <li>
+        <strong>Size limit.</strong> The combined cover and secret upload must stay under 256 MB.
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Privacy</h2>
+    <p>
+      StegoNinja has no accounts and stores nothing about you. Files and passwords live only in the
+      current browser tab for the duration of an operation; each embed or extract is independent.
+    </p>
+  </section>
+
+  <div class="cta">
+    <a mat-flat-button routerLink="/guided">
+      <mat-icon aria-hidden="true">auto_awesome</mat-icon>
+      Try the guided round-trip
+    </a>
+  </div>
+</div>
