@@ -1,0 +1,94 @@
+// Shared layout for the embed/extract tool pages.
+
+@mixin tool-page {
+  :host {
+    display: block;
+  }
+
+  .page {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: var(--sp-6) var(--sp-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-5);
+  }
+
+  .page-head {
+    h1 {
+      margin: 0 0 var(--sp-2);
+      font-size: var(--fs-h1);
+      font-weight: var(--fw-semibold);
+    }
+    p {
+      margin: 0;
+      color: var(--text-muted);
+    }
+  }
+
+  .dropzones {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--sp-4);
+  }
+
+  .inline-error {
+    margin: 0;
+    color: var(--danger);
+    font-size: var(--fs-small);
+  }
+
+  .submit-row {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-3);
+    flex-wrap: wrap;
+
+    button {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--sp-2);
+    }
+  }
+
+  .muted {
+    color: var(--text-muted);
+    font-size: var(--fs-small);
+  }
+
+  .progress {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-2);
+
+    span {
+      font-size: var(--fs-small);
+      color: var(--text-muted);
+    }
+  }
+
+  .error-panel {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--sp-3);
+    padding: var(--sp-3) var(--sp-4);
+    border: 1px solid color-mix(in srgb, var(--danger) 40%, var(--border));
+    border-radius: var(--radius-md);
+    background: color-mix(in srgb, var(--danger) 10%, var(--surface));
+
+    mat-icon {
+      color: var(--danger);
+      flex-shrink: 0;
+    }
+    p {
+      margin: 0;
+      font-size: var(--fs-small);
+    }
+  }
+
+  @media (max-width: 599px) {
+    .dropzones {
+      grid-template-columns: 1fr;
+    }
+  }
+}

@@ -1,0 +1,82 @@
+<div class="page">
+  <header class="page-head">
+    <h1>Embed a file</h1>
+    <p>Hide a secret file inside a cover image, audio, or video.</p>
+  </header>
+
+  <app-technique-select
+    [selectedId]="selectedId()"
+    [disabled]="busy()"
+    (selectedIdChange)="setSelected($event)"
+  />
+
+  <div class="dropzones">
+    <app-file-dropzone
+      label="Cover file"
+      [accept]="current().coverAccept"
+      [hint]="current().coverHint"
+      [disabled]="busy()"
+      [file]="cover()"
+      (fileChange)="cover.set($event)"
+    />
+    <app-file-dropzone
+      label="Secret file"
+      hint="Any file you want to hide."
+      [disabled]="busy()"
+      [file]="secret()"
+      (fileChange)="secret.set($event)"
+    />
+  </div>
+
+  @if (sizeError()) {
+    <p class="inline-error" role="alert">{{ sizeError() }}</p>
+  }
+
+  <app-options-form
+    [options]="options()"
+    [disabled]="busy()"
+    (optionsChange)="options.set($event)"
+  />
+
+  <app-symmetry-callout mode="embed" [video]="current().medium === 'video'" />
+
+  <div class="submit-row">
+    <button mat-flat-button type="button" [disabled]="!canSubmit()" (click)="submit()">
+      <mat-icon aria-hidden="true">lock</mat-icon>
+      Embed &amp; produce stego file
+    </button>
+    @if (apiDown()) {
+      <span class="muted">Service unavailable — try again once it's back.</span>
+    }
+  </div>
+
+  @if (busy()) {
+    <div class="progress" aria-live="polite">
+      @if (status() === 'uploading') {
+        <mat-progress-bar mode="determinate" [value]="progress()" />
+        <span>Uploading… {{ progress() }}%</span>
+      } @else {
+        <mat-progress-bar mode="indeterminate" />
+        <span>Processing on the server…</span>
+      }
+    </div>
+  }
+
+  @if (errorMessage(); as msg) {
+    <div class="error-panel" role="alert">
+      <mat-icon aria-hidden="true">error</mat-icon>
+      <p>{{ msg }}</p>
+    </div>
+  }
+
+  @if (status() === 'done' && result()) {
+    <app-result-card
+      heading="Secret embedded"
+      [metrics]="metrics()"
+      downloadLabel="Download stego file"
+      [downloading]="downloading()"
+      (download)="downloadStego()"
+    />
+    <app-symmetry-callout mode="embed" [video]="current().medium === 'video'" />
+  }
+</div>
