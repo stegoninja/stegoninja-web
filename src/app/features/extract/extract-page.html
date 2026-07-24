@@ -1,0 +1,74 @@
+<div class="page">
+  <header class="page-head">
+    <h1>Extract a file</h1>
+    <p>Recover the secret hidden inside a stego file produced by an embed.</p>
+  </header>
+
+  <app-technique-select
+    [selectedId]="selectedId()"
+    [disabled]="busy()"
+    (selectedIdChange)="setSelected($event)"
+  />
+
+  <div class="single-drop">
+    <app-file-dropzone
+      label="Stego file"
+      [accept]="current().coverAccept"
+      [hint]="'The ' + current().stegoExtension + ' file produced by the embed step.'"
+      [disabled]="busy()"
+      [file]="stego()"
+      (fileChange)="stego.set($event)"
+    />
+  </div>
+
+  @if (sizeError()) {
+    <p class="inline-error" role="alert">{{ sizeError() }}</p>
+  }
+
+  <app-symmetry-callout mode="extract" [video]="current().medium === 'video'" />
+
+  <app-options-form
+    [options]="options()"
+    [disabled]="busy()"
+    (optionsChange)="options.set($event)"
+  />
+
+  <div class="submit-row">
+    <button mat-flat-button type="button" [disabled]="!canSubmit()" (click)="submit()">
+      <mat-icon aria-hidden="true">lock_open</mat-icon>
+      Extract secret
+    </button>
+    @if (apiDown()) {
+      <span class="muted">Service unavailable — try again once it's back.</span>
+    }
+  </div>
+
+  @if (busy()) {
+    <div class="progress" aria-live="polite">
+      @if (status() === 'uploading') {
+        <mat-progress-bar mode="determinate" [value]="progress()" />
+        <span>Uploading… {{ progress() }}%</span>
+      } @else {
+        <mat-progress-bar mode="indeterminate" />
+        <span>Processing on the server…</span>
+      }
+    </div>
+  }
+
+  @if (errorMessage(); as msg) {
+    <div class="error-panel" role="alert">
+      <mat-icon aria-hidden="true">error</mat-icon>
+      <p>{{ msg }}</p>
+    </div>
+  }
+
+  @if (status() === 'done' && result()) {
+    <app-result-card
+      heading="Secret recovered"
+      [metrics]="metrics()"
+      downloadLabel="Download secret"
+      [downloading]="downloading()"
+      (download)="downloadSecret()"
+    />
+  }
+</div>

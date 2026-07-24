@@ -1,0 +1,7 @@
+@use '../shared/page';
+
+@include page.tool-page;
+
+.single-drop {
+  max-width: 420px;
+}

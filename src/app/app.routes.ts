@@ -11,6 +11,11 @@ export const routes: Routes = [
     loadComponent: () => import('./features/embed/embed-page').then((m) => m.EmbedPage),
     title: 'Embed · StegoNinja',
   },
-  // Feature routes (extract, guided, about) are registered as each is built.
+  {
+    path: 'extract',
+    loadComponent: () => import('./features/extract/extract-page').then((m) => m.ExtractPage),
+    title: 'Extract · StegoNinja',
+  },
+  // Feature routes (guided, about) are registered as each is built.
   { path: '**', redirectTo: '' },
 ];
