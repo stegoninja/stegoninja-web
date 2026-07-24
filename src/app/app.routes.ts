@@ -16,6 +16,11 @@ export const routes: Routes = [
     loadComponent: () => import('./features/extract/extract-page').then((m) => m.ExtractPage),
     title: 'Extract · StegoNinja',
   },
-  // Feature routes (guided, about) are registered as each is built.
+  {
+    path: 'guided',
+    loadComponent: () => import('./features/guided/guided').then((m) => m.Guided),
+    title: 'Guided round-trip · StegoNinja',
+  },
+  // The about route is registered when that page is built.
   { path: '**', redirectTo: '' },
 ];

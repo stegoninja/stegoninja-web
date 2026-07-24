@@ -1,0 +1,172 @@
+<div class="page">
+  <header class="page-head">
+    <h1>Guided round-trip</h1>
+    <p>Embed a secret, then recover it — the wizard carries your technique, options, and file across so extraction always matches.</p>
+  </header>
+
+  <mat-stepper
+    linear
+    [selectedIndex]="stepIndex()"
+    (selectionChange)="stepIndex.set($event.selectedIndex)"
+  >
+    <!-- Step 1 — configure & embed -->
+    <mat-step [completed]="embedDone()" label="Configure">
+      <div class="step-body">
+        <app-technique-select
+          [selectedId]="selectedId()"
+          [disabled]="embedBusy() || embedDone()"
+          (selectedIdChange)="selectedId.set($event)"
+        />
+
+        <div class="dropzones">
+          <app-file-dropzone
+            label="Cover file"
+            [accept]="current().coverAccept"
+            [hint]="current().coverHint"
+            [disabled]="embedBusy()"
+            [file]="cover()"
+            (fileChange)="cover.set($event)"
+          />
+          <app-file-dropzone
+            label="Secret file"
+            hint="Any file you want to hide."
+            [disabled]="embedBusy()"
+            [file]="secret()"
+            (fileChange)="secret.set($event)"
+          />
+        </div>
+
+        @if (sizeError()) {
+          <p class="inline-error" role="alert">{{ sizeError() }}</p>
+        }
+
+        <app-options-form
+          [options]="options()"
+          [disabled]="embedBusy()"
+          (optionsChange)="options.set($event)"
+        />
+        <app-symmetry-callout mode="embed" [video]="current().medium === 'video'" />
+
+        <div class="submit-row">
+          <button mat-flat-button type="button" [disabled]="!canEmbed()" (click)="embed()">
+            <mat-icon aria-hidden="true">lock</mat-icon>
+            Embed
+          </button>
+          @if (apiDown()) {
+            <span class="muted">Service unavailable — try again once it's back.</span>
+          }
+        </div>
+
+        @if (embedBusy()) {
+          <div class="progress" aria-live="polite">
+            @if (embedPhase() === 'uploading') {
+              <mat-progress-bar mode="determinate" [value]="embedProgress()" />
+              <span>Uploading… {{ embedProgress() }}%</span>
+            } @else {
+              <mat-progress-bar mode="indeterminate" />
+              <span>Processing on the server…</span>
+            }
+          </div>
+        }
+
+        @if (embedError(); as msg) {
+          <div class="error-panel" role="alert">
+            <mat-icon aria-hidden="true">error</mat-icon>
+            <p>{{ msg }}</p>
+          </div>
+        }
+      </div>
+    </mat-step>
+
+    <!-- Step 2 — stego ready -->
+    <mat-step [completed]="embedDone()" label="Stego ready">
+      <div class="step-body">
+        @if (embedResult()) {
+          <app-result-card
+            heading="Secret embedded"
+            [metrics]="embedMetricsList()"
+            downloadLabel="Download stego file"
+            [downloading]="downloadingStego()"
+            secondaryLabel="Continue to extract"
+            (download)="downloadStego()"
+            (secondary)="continueToExtract()"
+          />
+        }
+      </div>
+    </mat-step>
+
+    <!-- Step 3 — extract -->
+    <mat-step [completed]="extractDone()" label="Extract">
+      <div class="step-body">
+        <app-symmetry-callout mode="extract" [video]="current().medium === 'video'" />
+
+        <div class="carried">
+          <p class="carried-line">
+            <mat-icon aria-hidden="true">check_circle</mat-icon>
+            Using <strong>{{ current().label }}</strong> with your embed options — carried over automatically.
+          </p>
+          @if (stegoFile(); as f) {
+            <p class="carried-line">
+              <mat-icon aria-hidden="true">description</mat-icon>
+              Stego file ready: <strong>{{ f.name }}</strong>
+            </p>
+          }
+        </div>
+
+        <app-options-form [options]="options()" [readonly]="true" />
+
+        <div class="submit-row">
+          <button
+            mat-flat-button
+            type="button"
+            [disabled]="extractBusy() || apiDown() || !stegoFile()"
+            (click)="extract()"
+          >
+            <mat-icon aria-hidden="true">lock_open</mat-icon>
+            Extract secret
+          </button>
+        </div>
+
+        @if (extractBusy()) {
+          <div class="progress" aria-live="polite">
+            @if (extractPhase() === 'uploading') {
+              <mat-progress-bar mode="determinate" [value]="extractProgress()" />
+              <span>Uploading… {{ extractProgress() }}%</span>
+            } @else {
+              <mat-progress-bar mode="indeterminate" />
+              <span>Processing on the server…</span>
+            }
+          </div>
+        }
+
+        @if (extractError(); as msg) {
+          <div class="error-panel" role="alert">
+            <mat-icon aria-hidden="true">error</mat-icon>
+            <p>{{ msg }}</p>
+          </div>
+        }
+      </div>
+    </mat-step>
+
+    <!-- Step 4 — recovered -->
+    <mat-step label="Recovered">
+      <div class="step-body">
+        @if (extractResult()) {
+          <app-result-card
+            heading="Secret recovered"
+            [metrics]="secretMetrics()"
+            downloadLabel="Download secret"
+            [downloading]="downloadingSecret()"
+            (download)="downloadSecret()"
+          />
+        }
+        <div class="submit-row">
+          <button mat-stroked-button type="button" (click)="restart()">
+            <mat-icon aria-hidden="true">restart_alt</mat-icon>
+            Start over
+          </button>
+        </div>
+      </div>
+    </mat-step>
+  </mat-stepper>
+</div>
